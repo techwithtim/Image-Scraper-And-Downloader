@@ -24,8 +24,10 @@ def get_images_from_google(wd, delay, max_images):
 		scroll_down(wd)
 
 		thumbnails = wd.find_elements(By.CLASS_NAME, "Q4LuWd")
-
-		for img in thumbnails[len(image_urls) + skips:max_images]:
+		found_thumbnails = len(thumbnails)
+		
+		#Changed from max_images to found_thumbnails
+		for img in thumbnails[len(image_urls) + skips:found_thumbnails]:
 			try:
 				img.click()
 				time.sleep(delay)
@@ -34,14 +36,14 @@ def get_images_from_google(wd, delay, max_images):
 
 			images = wd.find_elements(By.CLASS_NAME, "n3VNCb")
 			for image in images:
-				if image.get_attribute('src') in image_urls:
-					max_images += 1
-					skips += 1
-					break
-
 				if image.get_attribute('src') and 'http' in image.get_attribute('src'):
 					image_urls.add(image.get_attribute('src'))
 					print(f"Found {len(image_urls)}")
+					
+			#Here the loop checks if the correct amount of urls are found
+			if len(image_urls) >= max_images:
+				print(f"{max_images} found, search done!")
+				break
 
 	return image_urls
 
