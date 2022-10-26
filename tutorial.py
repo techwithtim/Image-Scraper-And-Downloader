@@ -18,9 +18,8 @@ def get_images_from_google(wd, delay, max_images):
 	wd.get(url)
 
 	image_urls = set()
-	skips = 0
 
-	while len(image_urls) + skips < max_images:
+	while len(image_urls) < max_images:
 		scroll_down(wd)
 
 		thumbnails = wd.find_elements(By.CLASS_NAME, "Q4LuWd")
